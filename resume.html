@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume | Jaiaditya Asudani</title>
+    <link rel="stylesheet" href="assets/styles.css">
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="container nav-content">
+            <a href="index.html" class="logo">Jaiaditya Asudani</a>
+            <button class="mobile-toggle" aria-label="Toggle Menu">☰</button>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="experiences.html">Experience</a>
+                <a href="projects.html">Projects</a>
+                <a href="resume.html" class="active">Resume</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container" style="padding: 4rem 1.5rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+            <h1>My Resume</h1>
+            <a href="assets/Jaiaditya-Asudani_Resume.pdf" download class="btn btn-primary">Download PDF</a>
+        </div>
+
+        <div class="card" style="padding: 0; overflow: hidden; height: 900px; background: #525659;">
+            <!-- Using relative path `assets/Jaiaditya-Asudani_Resume.pdf` -->
+            <object data="assets/Jaiaditya-Asudani_Resume.pdf" type="application/pdf" width="100%" height="100%">
+                <div style="padding: 3rem; text-align: center; color: white;">
+                    <p>It appears your browser doesn't support PDF embedding.</p>
+                    <a href="assets/Jaiaditya-Asudani_Resume.pdf" class="btn btn-primary">Download Resume</a>
+                </div>
+            </object>
+        </div>
+
+        <!-- Summary Removed -->
+
+    </main>
+
+    <footer style="border-top: 1px solid var(--border); padding: 2rem 0; text-align: center; margin-top: 4rem;">
+        <div class="container">
+
+        </div>
+    </footer>
+
+    <script src="assets/main.js"></script>
+</body>
+
+</html>
