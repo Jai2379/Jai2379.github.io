@@ -1,5 +1,5 @@
 /* Professional Engineering Portfolio Theme */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@300;500;700&display=swap');
 
 :root {
     /* Colors - Black/Purple Theme */
@@ -32,7 +32,17 @@
     --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
     --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.5);
 
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    /* Mouse Tracking */
+    --mouse-x: 50%;
+    --mouse-y: 50%;
+
+    /* Mouse Tracking */
+    --mouse-x: 50%;
+    --mouse-y: 50%;
+
+    font-family: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    --font-display: 'Space Grotesk', sans-serif;
 }
 
 /* Reset */
@@ -44,14 +54,45 @@
 
 body {
     background-color: var(--bg-body);
-    background-image:
-        var(--bg-gradient),
-        radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.08) 0%, transparent 50%);
-    background-attachment: fixed;
+    /* Replaced static gradient with spotlight logic */
+    background-color: #050505;
     color: var(--text-main);
     line-height: 1.6;
     min-height: 100vh;
+    overflow-x: hidden;
 }
+
+/* Ghost PCB Background Layer */
+.spotlight-bg {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: -1;
+    background-image: url('pcb.svg');
+    background-size: 300px 300px;
+    /* Large scale for "system bus" feel */
+    background-position: center;
+    opacity: 0.04;
+    /* Ghost opacity - Reduced */
+
+    /* Vignette Mask - Fade out in center, visible at edges */
+    /* Wait, checking intent: "fade out in the center... only visible on far edges" */
+    /* So center is transparent (masked out), edges are white (visible) */
+    mask-image: radial-gradient(circle at center, transparent 40%, black 100%);
+    -webkit-mask-image: radial-gradient(circle at center, transparent 40%, black 100%);
+}
+
+/* Base Spotlight Glow (Ambient) - REMOVED per user request
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    background: radial-gradient(800px circle at var(--mouse-x) var(--mouse-y),
+            rgba(139, 92, 246, 0.15),
+            transparent 40%);
+    pointer-events: none;
+} */
 
 a {
     text-decoration: none;
@@ -68,35 +109,123 @@ ul {
     list-style: none;
 }
 
+/* Constrained Paragraph Width for Readability */
+.section-surface p {
+    max-width: 65ch;
+    /* Approx 60-70 characters */
+}
+
 /* Typography */
 h1,
 h2,
 h3,
 h4 {
+    font-family: var(--font-display);
     font-weight: 700;
-    line-height: 1.2;
+    line-height: 1.1;
     letter-spacing: -0.02em;
 }
 
 h1 {
-    font-size: 2.5rem;
+    font-size: clamp(3rem, 5vw + 1rem, 6rem);
+    /* significantly larger, responsive */
+    font-weight: 700;
     margin-bottom: 1rem;
+    letter-spacing: -0.04em;
+    text-transform: uppercase;
+    background: linear-gradient(to right, #ffffff, #d8b4fe);
+    /* White to Light Purple */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 0.95;
+    /* tighter line height for logo feel */
 }
 
 h2 {
     font-size: 2rem;
     margin-bottom: 1.5rem;
     color: var(--text-main);
+    font-weight: 500;
 }
 
 h3 {
     font-size: 1.25rem;
     margin-bottom: 0.5rem;
+    font-weight: 500;
 }
 
 p {
     margin-bottom: 1rem;
     color: var(--text-secondary);
+    font-family: 'Space Grotesk', sans-serif;
+    /* Ensuring consistency as requested */
+    font-weight: 300;
+}
+
+/* Final UI Polish Overrides */
+.tech-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2) !important;
+    /* Explicit solid line as requested */
+    font-family: 'Space Grotesk', sans-serif !important;
+    font-weight: 300 !important;
+    padding-bottom: 1.5rem !important;
+    margin-bottom: 3rem !important;
+    opacity: 0.8 !important;
+    transition: border-color 0.3s ease, opacity 0.3s ease;
+    /* Smooth transition */
+}
+
+/* Header Hover Fix */
+.hero-glass-card:hover .tech-header {
+    border-bottom-color: rgba(255, 255, 255, 0.8) !important;
+    /* Brighten line on hover */
+    opacity: 1 !important;
+}
+
+.tech-header span {
+    font-family: inherit !important;
+}
+
+/* University of Waterloo Gold Gradient */
+.hero-tagline {
+    /* Original Purple: color: var(--primary); */
+    background: linear-gradient(to right, #FFD54F, #FBC02D);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 500;
+}
+
+/* Ensure buttons are properly sized/positioned */
+.social-buttons-container {
+    margin-top: 2.5rem;
+}
+
+.social-btn {
+    padding: 0.85rem 1.5rem;
+    font-size: 1rem;
+}
+
+/* Footer Social Links Interactive Styles */
+footer a {
+    color: #FFD54F !important;
+    /* Waterloo Gold */
+    display: inline-block;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    font-weight: 400;
+    position: relative;
+    padding: 0.5rem 1rem;
+    /* Hit area padding */
+}
+
+footer a:hover {
+    transform: translateY(-5px);
+    font-weight: 600;
+    text-shadow: 0 0 10px rgba(255, 213, 79, 0.6);
+    /* Soft yellow glow */
+    color: #FFF !important;
+    /* Brighten text on hover */
 }
 
 /* Components */
@@ -152,7 +281,34 @@ p {
     border-radius: var(--radius);
     padding: 1.5rem;
     transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+    /* Card Border Glow */
 }
+
+/* Dynamic Border Glow - REMOVED per user request
+.card::before,
+.hero-glass-card::before,
+.experience-card::before,
+.project-card-image::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    z-index: -1;
+    border-radius: inherit;
+    background: radial-gradient(400px circle at var(--mouse-x) var(--mouse-y),
+            rgba(139, 92, 246, 0.4),
+            transparent 40%);
+    opacity: 0;
+    transition: opacity 0.5s;
+    pointer-events: none;
+}
+
+.card:hover::before,
+.hero-glass-card:hover::before,
+.experience-card:hover::before,
+.project-card-image:hover::before {
+    opacity: 1;
+} */
 
 .card:hover {
     transform: translateY(-2px);
@@ -231,22 +387,85 @@ p {
 
 /* Hero */
 .hero {
-    padding: 2rem 0 4rem;
-    /* Reduced top padding */
-    text-align: center;
-    max-width: 1100px;
-    /* Increased max-width */
+    padding: 4rem 0 6rem;
+    /* Increased vertical padding */
     margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
     position: relative;
     z-index: 1;
+    max-width: 1400px;
+    /* Wide layout */
+    width: 95%;
+    /* Ensure mobile padding */
+}
+
+/* Hero Content Wrapper for Flex Layout */
+.hero-content-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    gap: 2rem;
+    text-align: left;
+}
+
+.hero-text {
+    flex: 1;
+    min-width: 0;
+    padding-right: 2rem;
+    /* Add some spacing so text doesn't touch image */
+}
+
+.hero-image {
+    flex: 1.2;
+    /* Explicitly larger than text */
+    width: auto;
+    /* Let flex dictate */
+    max-width: none !important;
+    /* Force override */
+    min-width: 400px;
+    /* Ensure minimum size */
+    display: block;
+    position: relative;
+}
+
+.image-placeholder-fallback {
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+}
+
+.profile-photo {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    display: block;
 }
 
 .hero-tagline {
-    font-size: 1.25rem;
+    font-size: 1.5rem;
+    /* Slightly larger tagline */
     margin-bottom: 2rem;
+    font-weight: 300;
+}
+
+@media (max-width: 900px) {
+    .hero-content-wrapper {
+        flex-direction: column-reverse;
+        text-align: center;
+        gap: 3rem;
+    }
+
+    .hero-image {
+        max-width: 100%;
+        width: 100%;
+        flex: 1;
+    }
+
+    h1 {
+        font-size: 3.5rem;
+        /* Smaller on mobile but still big */
+    }
 }
 
 /* Metrics Styles Removed */
@@ -380,10 +599,12 @@ p {
 
 /* Social Icons */
 /* Social Buttons (Text + Icon) */
+/* Social Buttons (Text + Icon) */
 .social-buttons-container {
     display: flex;
     gap: 1rem;
-    justify-content: center;
+    justify-content: flex-start;
+    /* Aligned left for desktop */
     margin-top: 1.5rem;
     flex-wrap: wrap;
 }
@@ -391,13 +612,103 @@ p {
 /* Component Polish Classes */
 .hero-glass-card {
     background: var(--surface-glass);
-    border: 1px solid var(--border-glow);
+    /* Removed solid border for Spec Sheet bracket style */
+    border: 1px solid transparent;
     border-radius: var(--radius-lg);
     padding: 3rem;
     box-shadow: var(--shadow-glow);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     margin-bottom: 2rem;
+    position: relative;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+}
+
+/* Lift & Activate Effect */
+.hero-glass-card:hover {
+    transform: translateY(-5px);
+    /* Reduced lift */
+    box-shadow: 0 20px 40px -10px rgba(139, 92, 246, 0.3);
+}
+
+/* Bracket Borders using ::after */
+.hero-glass-card::after,
+.section-surface::after {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    pointer-events: none;
+    z-index: 1;
+
+    /* Corner Brackets Gradient Definition */
+    background:
+        linear-gradient(to right, currentColor 2px, transparent 2px) 0 0,
+        linear-gradient(to bottom, currentColor 2px, transparent 2px) 0 0,
+        linear-gradient(to left, currentColor 2px, transparent 2px) 100% 0,
+        linear-gradient(to bottom, currentColor 2px, transparent 2px) 100% 0,
+        linear-gradient(to right, currentColor 2px, transparent 2px) 0 100%,
+        linear-gradient(to top, currentColor 2px, transparent 2px) 0 100%,
+        linear-gradient(to left, currentColor 2px, transparent 2px) 100% 100%,
+        linear-gradient(to top, currentColor 2px, transparent 2px) 100% 100%;
+
+    background-repeat: no-repeat;
+    background-size: 20px 20px;
+
+    /* Default State: Grey/Dimmed */
+    color: var(--border);
+    opacity: 0.6;
+    transition: color 0.4s ease, opacity 0.4s ease;
+}
+
+.hero-glass-card:hover::after,
+.section-surface:hover::after {
+    color: var(--primary);
+    /* Glow Color */
+    opacity: 1;
+    filter: drop-shadow(0 0 2px var(--primary));
+}
+
+/* Technical Header Styles */
+.tech-header {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    /* New Monospace Font */
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    opacity: 0.3;
+    /* Dimmed by default */
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.05em;
+    border-bottom: 1px dashed var(--border);
+    padding-bottom: 0.5rem;
+    transition: color 0.4s ease, opacity 0.4s ease, border-color 0.4s ease;
+}
+
+.hero-glass-card:hover .tech-header,
+.section-surface:hover .tech-header {
+    color: var(--primary);
+    /* Glow Color */
+    opacity: 1;
+    border-color: var(--primary);
+}
+
+.hero-glass-card:hover .tech-header,
+.section-surface:hover .tech-header {
+    color: var(--primary-hover);
+    opacity: 1;
+    border-color: var(--primary);
+}
+
+.tech-header span {
+    display: inline-block;
+}
+
+@media (max-width: 600px) {
+    .desktop-only {
+        display: none !important;
+    }
 }
 
 .hero h1 {
@@ -406,27 +717,40 @@ p {
 
 .image-placeholder-fallback {
     /* Enhanced Photo Placeholder */
-    box-shadow: 0 0 30px rgba(139, 92, 246, 0.2);
-    border: 1px solid var(--border-glow);
+    box-shadow: 0 0 40px rgba(139, 92, 246, 0.25);
+    border: 1px solid rgba(139, 92, 246, 0.3);
     background: radial-gradient(circle at center, rgba(139, 92, 246, 0.1), transparent);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    width: 100%;
+}
+
+.profile-photo {
+    width: 100%;
+    height: auto;
+    display: block;
+    aspect-ratio: 3/4;
+    /* Ensure nice portrait ratio */
+    object-fit: cover;
 }
 
 .section-surface {
     background: rgba(255, 255, 255, 0.02);
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
+    /* Removed top/bottom border for bracket style - keeping transparent border for spacing */
+    border: 1px solid transparent;
     position: relative;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
 }
 
+.section-surface:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
+    background: rgba(255, 255, 255, 0.03);
+}
+
+/* Remove the old side accent */
 .section-surface::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 4px;
-    height: 100%;
-    background: linear-gradient(to bottom, transparent, var(--primary), transparent);
-    opacity: 0.5;
+    display: none;
 }
 
 .skill-card {
@@ -659,7 +983,81 @@ p {
 /* Mobile Stack */
 @media (max-width: 768px) {
 
-    .project-band-content,
+    /* System Status Footer */
+    .system-status-bar {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background: var(--bg-body);
+        border-top: 1px solid var(--border);
+        padding: 0.5rem 1rem;
+        display: flex;
+        justify-content: space-between;
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        color: var(--text-secondary);
+        z-index: 1000;
+    }
+
+    .social-btn-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid var(--border);
+        color: var(--text-secondary);
+        transition: all 0.2s;
+        margin-right: 0.75rem;
+    }
+
+    .social-btn-icon:hover {
+        background: var(--primary);
+        color: white;
+        border-color: var(--primary);
+        transform: translateY(-2px);
+    }
+
+    /* Mobile Stack for Hero */
+    @media (max-width: 900px) {
+        .hero-content-grid {
+            grid-template-columns: 1fr;
+            text-align: center;
+            gap: 2rem;
+        }
+
+        .hero-content-grid .hero-text-column {
+            order: 2;
+            /* Text below image on mobile usually looks better, or keep 1 for text top */
+            align-items: center;
+        }
+
+        .hero-content-grid .hero-image-column {
+            order: 1;
+        }
+
+        .hero-actions {
+            justify-content: center;
+        }
+
+        .social-buttons-container {
+            justify-content: center !important;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .system-status-bar {
+            position: static;
+            /* Stack naturally on mobile */
+            flex-direction: column;
+            text-align: center;
+            gap: 0.5rem;
+        }
+    }
+
     .project-band:nth-child(even) .project-band-content {
         flex-direction: column;
         gap: 2rem;
@@ -671,31 +1069,63 @@ p {
     }
 }
 
+
+/* Waterloo Crest Positioning */
+.waterloo-crest {
+    position: absolute;
+    bottom: -20px;
+    left: -20px;
+    width: 25%;
+    min-width: 80px;
+    max-width: 100px;
+    aspect-ratio: 1/1;
+    background: rgba(20, 20, 30, 0.9);
+    border: 1px solid var(--border-glow);
+    border-radius: 16px;
+    padding: 6px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+
 /* Updated Hero Layout with Profile Photo */
 .hero-content-wrapper {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 3rem;
+    gap: 4rem;
 }
 
 .hero-text {
     flex: 1;
+    min-width: 0;
 }
 
 .hero-image {
-    flex-shrink: 0;
-    width: 220px;
+    flex: 0 0 auto;
+    /* Stop growing indefinitely */
+    width: 40%;
+    max-width: 400px;
+    /* Fixed Cap */
+    position: relative;
+    display: flex;
+    justify-content: flex-end;
+    /* Align right */
 }
 
 .image-placeholder-fallback {
-    width: 200px;
-    height: 200px;
+    width: 100%;
+    height: 500px;
+    /* Fixed height frame for cropping */
     background-color: var(--bg-surface);
-    border: 1px dashed var(--text-secondary);
-    border-radius: 12px;
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    /* Re-applied border */
+    border-radius: var(--radius-lg);
     position: relative;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0 40px rgba(139, 92, 246, 0.25);
+    /* Re-applied glow */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -706,20 +1136,7 @@ p {
     width: 100%;
     height: 100%;
     object-fit: cover;
-}
-
-@media (max-width: 768px) {
-    .hero-content-wrapper {
-        flex-direction: column;
-        text-align: center;
-        gap: 2rem;
-    }
-
-    .hero-text {
-        text-align: center;
-    }
-
-    .social-buttons-container {
-        justify-content: center;
-    }
+    /* Fill the frame */
+    object-position: top center;
+    /* Crop from bottom (hide watermark) */
 }
